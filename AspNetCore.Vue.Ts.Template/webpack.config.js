@@ -1,4 +1,4 @@
-﻿const path = require('path');
+const path = require('path');
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const OptimizeCSSAssetsPlugin = require("optimize-css-assets-webpack-plugin");
@@ -74,6 +74,24 @@ module.exports = {
                 extractComments: true
             }),
             new OptimizeCSSAssetsPlugin({})
-        ]
+        ],
+        splitChunks: {
+            cacheGroups: {
+                commons: {
+                    chunks: 'initial',
+                    name: 'commons',
+                    minChunks: 2,
+                    maxInitialRequests: 5,
+                    minSize: 0
+                },
+                vendor: {
+                    test: /node_modules/,
+                    chunks: 'initial',
+                    name: 'vendor',
+                    priority: 10,
+                    enforce: true
+                }
+            }
+        }
     },
 };
